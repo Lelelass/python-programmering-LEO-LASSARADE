@@ -13,11 +13,11 @@ b2 = round(math.sqrt(c2 ** 2 - a2 ** 2), 2)
 print("1b : " + b2)
 
 
-''''2'''
+'''2'''
 
 '''3'''
 
 def accuracy (TP, TN, FP, FN):
-    return (sumTPTN := TP + TN) / (sumTPTN + FP + FN)
+    return (sumTPTN := TP + TN) / (sumTPTN + FP + FN) # Walrus operator will only work while running python 3.8 onwards
 
 print("Accuracy:" + accuracy(2,985,2,11))
