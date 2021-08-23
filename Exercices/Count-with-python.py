@@ -6,11 +6,14 @@ c = math.sqrt(a ** 2 + b ** 2)
 
 print(c)
 
-'''2'''
+'''1b'''
 c2, a2 = 7, 5
 b2 = round(math.sqrt(c2 ** 2 - a2 ** 2), 2)
 
 print(b2)
+
+
+''''2'''
 
 '''3'''
 
