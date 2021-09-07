@@ -131,3 +131,5 @@ dmypy.json
 #pipfile
 Pipfile
 Pipfile.lock
+*.csv
+*.txt
