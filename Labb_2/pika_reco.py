@@ -6,8 +6,8 @@ def read_and_format(csv_file):
         df = pd.read_csv(csv_file)
         df.columns.values[0] = "Width"
         df.columns.values[1] = "Height"
-        df.iloc[:, 0] = df.iloc[:, 0].str.replace('(', '')
-        df.iloc[:, 1] = df.iloc[:, 1].str.replace(')', '')
+        df.iloc[:, 0] = df.iloc[:, 0].str.replace(r'(', '', regex=True)
+        df.iloc[:, 1] = df.iloc[:, 1].str.replace(r')', '', regex=True)
         df['Width'] = df['Width'].astype(float)
         df['Height'] = df['Height'].astype(float)
         return df
