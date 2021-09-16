@@ -13,13 +13,30 @@ pichu_training_data, pichu_test_data = pida.sample_randomization(pichu_data)
 
 test_point = (pikachu_test_data.iloc[0][0], pikachu_test_data.iloc[0][1])
 print(test_point)
-#((P[0]-Q[0])**2 + (P[1]-Q[1])**2)
 
 pikachu_training_data['distance']  = ((pikachu_training_data['Width'] - test_point[0])**2 + (pikachu_training_data['Height'] - test_point[1])**2)**0.5
 pichu_training_data['distance']  = ((pichu_training_data['Width'] - test_point[0])**2 + (pichu_training_data['Height'] - test_point[1])**2)**0.5
+distance_to_pikachu = pikachu_training_data['distance'].min()# Minimal value for column distance
+distance_to_pichu = pichu_training_data['distance'].min()
 
-print(pikachu_training_data)
-print(pichu_training_data)
+print(distance_to_pikachu)
+print(distance_to_pichu)
+
+while True:
+    try:
+        user_input = input("Two points ceparated by a space").split(" ")
+        user_point = [float(value) for value in user_input]
+        print(user_point)
+        break
+    except ValueError as err:
+        print(err)
+    except TypeError as err:
+        print(err)
+
+#print(pikachu_training_data)
+#print(pichu_training_data)
+
+
 
 
 
@@ -29,5 +46,4 @@ plt.scatter(pichu_training_data.iloc[:,0], pichu_training_data.iloc[:,1])
 plt.scatter(pichu_test_data.iloc[:,0], pichu_test_data.iloc[:,1])
 plt.scatter(pikachu_test_data.iloc[:,0], pikachu_test_data.iloc[:,1])
 
-#Eucl avståndet från testpunkt till datapunkt (varje punkt)
 
