@@ -11,6 +11,9 @@ pichu_data = pida.read_and_format('pichu.csv')
 pikachu_training_data, pikachu_test_data = pida.sample_randomization(pikachu_data)# Functionen returnerar en tuple så jag vill komma åt första värden i tuplet
 pichu_training_data, pichu_test_data = pida.sample_randomization(pichu_data)
 
+#pikachu_training_data = picalc.test_point_distance((pikachu_test_data.iloc[0][0], pikachu_test_data.iloc[0][1]), pikachu_training_data)
+#print(pikachu_training_data)
+
 #test_point = (pikachu_test_data.iloc[0][0], pikachu_test_data.iloc[0][1])
 #print(test_point)
 
@@ -22,14 +25,16 @@ pichu_training_data, pichu_test_data = pida.sample_randomization(pichu_data)
 #print(distance_to_pikachu)
 #print(distance_to_pichu)
 
-'''
+
 
 while True:
     try:
         user_input = input("Two points separated by a space").split(" ")
         user_point = [float(value) for value in user_input]
-        pikachu_training_data['distance']  = ((pikachu_training_data['Width'] - user_point[0])**2 + (pikachu_training_data['Height'] - user_point[1])**2)**0.5
-        pichu_training_data['distance']  = ((pichu_training_data['Width'] - user_point[0])**2 + (pichu_training_data['Height'] - user_point[1])**2)**0.5
+        pikachu_traing_data = picalc.test_point_distance(user_point, pikachu_training_data)
+        pichu_traing_data = picalc.test_point_distance(user_point, pichu_training_data)
+        #pikachu_training_data['distance']  = ((pikachu_training_data['Width'] - user_point[0])**2 + (pikachu_training_data['Height'] - user_point[1])**2)**0.5
+        #pichu_training_data['distance']  = ((pichu_training_data['Width'] - user_point[0])**2 + (pichu_training_data['Height'] - user_point[1])**2)**0.5
         distance_to_pikachu = pikachu_training_data['distance'].min()# Minimal value for column distance
         distance_to_pichu = pichu_training_data['distance'].min()
         if distance_to_pichu > distance_to_pikachu:
@@ -41,15 +46,16 @@ while True:
         print(err)
     except TypeError as err:
         print(err)
-'''
 
+
+'''
 
 i = 0
 pikachu_count = 0
 pichu_count = 0
 
 while i < 5:
-    test_point = (pikachu_test_data.iloc[i][0],pikachu_test_data.iloc[i][1])
+    test_point = (pichu_test_data.iloc[i][0],pichu_test_data.iloc[i][1])
     pikachu_training_data['distance']  = ((pikachu_training_data['Width'] - test_point[0])**2 + (pikachu_training_data['Height'] - test_point[1])**2)**0.5
     pichu_training_data['distance']  = ((pichu_training_data['Width'] - test_point[0])**2 + (pichu_training_data['Height'] - test_point[1])**2)**0.5
     distance_to_pikachu = pikachu_training_data['distance'].min()# Minimal value for column distance
@@ -71,4 +77,4 @@ plt.scatter(pichu_training_data.iloc[:,0], pichu_training_data.iloc[:,1])
 plt.scatter(pichu_test_data.iloc[:,0], pichu_test_data.iloc[:,1])
 plt.scatter(pikachu_test_data.iloc[:,0], pikachu_test_data.iloc[:,1])
 
-
+'''
