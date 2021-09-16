@@ -26,13 +26,12 @@ pichu_training_data, pichu_test_data = pida.sample_randomization(pichu_data)
 #print(distance_to_pichu)
 
 
-
 while True:
     try:
         user_input = input("Two points separated by a space").split(" ")
         user_point = [float(value) for value in user_input]
-        pikachu_traing_data = picalc.test_point_distance(user_point, pikachu_training_data)# Calls function for adding a column distance to dataframe
-        pichu_traing_data = picalc.test_point_distance(user_point, pichu_training_data)
+        pikachu_training_data = picalc.test_point_distance(user_point, pikachu_training_data)# Calls function for adding a column distance to dataframe
+        pichu_training_data = picalc.test_point_distance(user_point, pichu_training_data)
         distance_to_pikachu = pikachu_training_data['distance'].min()# Minimal value for column distance
         distance_to_pichu = pichu_training_data['distance'].min()
         if distance_to_pichu > distance_to_pikachu:
@@ -74,5 +73,6 @@ plt.scatter(pikachu_training_data.iloc[:,0], pikachu_training_data.iloc[:,1])
 plt.scatter(pichu_training_data.iloc[:,0], pichu_training_data.iloc[:,1])
 plt.scatter(pichu_test_data.iloc[:,0], pichu_test_data.iloc[:,1])
 plt.scatter(pikachu_test_data.iloc[:,0], pikachu_test_data.iloc[:,1])
+
 
 '''
