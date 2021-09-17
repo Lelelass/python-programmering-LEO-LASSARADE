@@ -1,4 +1,5 @@
 import pandas as pd
+#Seed
 
 def read_and_format(csv_file):
         df = pd.read_csv(csv_file)
@@ -15,3 +16,9 @@ def sample_randomization(dataframe): # koden har jag fått reda på från https:
         train_data = random_df[0:44]
         test_data = random_df[45:]
         return train_data, test_data
+
+def sort_and_list(dataframe):
+        dataframe = dataframe.sort_values('distance')
+        min_five = dataframe.iloc[:5,2].tolist()
+        return min_five
+
