@@ -134,3 +134,4 @@ Pipfile.lock
 *.csv
 *.txt
 Labb_2/notes.md
+Labb_2/jupitests.ipynb
