@@ -17,8 +17,15 @@ def sample_randomization(dataframe): # koden har jag fått reda på från https:
         test_data = random_df[45:]
         return train_data, test_data
 
-def sort_and_list(dataframe):
+def sort_and_list(dataframe): # Returns a list of the 5 minimal distances calculated within the dataframe
         dataframe = dataframe.sort_values('distance')
         min_five = dataframe.iloc[:5,2].tolist()
         return min_five
+
+def test_df_to_coordinates_list(dataframe1, dataframe2):
+        dataframe1['coordinates'] = dataframe1.values.tolist()
+        dataframe2['coordinates'] = dataframe2.values.tolist()
+        test_points = dataframe1.iloc[:5,2].tolist() + dataframe2.iloc[:5,2].tolist()
+        return test_points
+
 
