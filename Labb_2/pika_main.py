@@ -27,21 +27,30 @@ for test_point in test_points : #each test point will be tested against it's 5 c
     print(pichu_distances)
 
 
-    closer_matches = {"pikachu" : [], "pichu": []}
-    for distance_pika in pikachu_distances:
-        do_break = False
-        for distance_pichu in pichu_distances:
-            if distance_pika < distance_pichu:
-                continue
+    closer_matches = {"pikachu" : [], "pichu": []} 
+    i = 0
+
+    while i < 5 and len(closer_matches['pikachu']) + len(closer_matches['pichu']) < 5:
+        j = 0
+        append_pika = True
+
+        while j < len(pichu_distances):
+            if pikachu_distances[i] < pichu_distances[j]:
+                j += 1
             else:
-                if distance_pichu not in closer_matches['pichu']: #prevent double matching of the condition, and double adding to the dict.
-                    closer_matches['pichu'].append(distance_pichu)
-                    do_break = True
-                else:
-                    do_break = True
+                closer_matches['pichu'].append(pichu_distances[j])
+                #if i != 0:
+                #    i -= 1
+                if j + 1 < len(pichu_distances) and pikachu_distances[i] < pichu_distances[j+1]:
+                    closer_matches['pikachu'].append(pikachu_distances[i])
+                append_pika = False
+                pichu_distances.remove(pichu_distances[j])
+                break
         
-        if do_break != True:
-            closer_matches['pikachu'].append(distance_pika)
+        if append_pika != False:
+            closer_matches['pikachu'].append(pikachu_distances[i])
+        
+        i += 1
 
 
     if len(closer_matches['pikachu']) > len(closer_matches['pichu']):
