@@ -22,35 +22,8 @@ for test_point in test_points : #each test point will be tested against it's 5 c
 
     pikachu_distances = pida.sort_and_list(pikachu_training_data) #This sorts the dataframe with distance to point ascending, and returns a list of the 5 smallest values. (5 closest points to test value)
     pichu_distances = pida.sort_and_list(pichu_training_data)
-
-    print(pikachu_distances)
-    print(pichu_distances)
-
-
-    closer_matches = {"pikachu" : [], "pichu": []} 
-    i = 0
-
-    while i < 5 and len(closer_matches['pikachu']) + len(closer_matches['pichu']) < 5:
-        j = 0
-        append_pika = True
-
-        while j < len(pichu_distances):
-            if pikachu_distances[i] < pichu_distances[j]:
-                j += 1
-            else:
-                closer_matches['pichu'].append(pichu_distances[j])
-                #if i != 0:
-                #    i -= 1
-                if j + 1 < len(pichu_distances) and pikachu_distances[i] < pichu_distances[j+1]:
-                    closer_matches['pikachu'].append(pikachu_distances[i])
-                append_pika = False
-                pichu_distances.remove(pichu_distances[j])
-                break
-        
-        if append_pika != False:
-            closer_matches['pikachu'].append(pikachu_distances[i])
-        
-        i += 1
+   
+    closer_matches = picalc.list_comparison(pikachu_distances,pichu_distances)
 
 
     if len(closer_matches['pikachu']) > len(closer_matches['pichu']):
