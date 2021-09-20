@@ -16,10 +16,11 @@ def list_comparison(pika_closest_points, pichu_closest_points):# Returns the 5 s
                 j += 1
             else:
                 closer_matches['pichu'].append(pichu_closest_points[j])
-                #if i != 0:
-                #    i -= 1
+
                 if j + 1 < len(pichu_closest_points) and pika_closest_points[i] < pichu_closest_points[j+1]:
                     closer_matches['pikachu'].append(pika_closest_points[i])
+                elif i != 0:
+                    i -= 1
                 append_pika = False
                 pichu_closest_points.remove(pichu_closest_points[j])
                 break
