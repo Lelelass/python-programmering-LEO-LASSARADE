@@ -28,3 +28,5 @@ def list_comparison(pika_closest_points, pichu_closest_points):# Returns the 5 s
             closer_matches['pikachu'].append(pika_closest_points[i])
         
         i += 1
+
+    return closer_matches
