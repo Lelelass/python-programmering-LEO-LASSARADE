@@ -26,12 +26,11 @@ Here starts the part of the exercice where a single test point is provided by an
 
 try:
     user_input = input("Enter a width and an eight, with a blank space inbetween").split(" ")
-    if not len(user_input) == 2:
+    if not len(user_input) == 2: # This controls if the list has two values as expected
             raise ValueError("You just gave one value or entered an incorrect format (or too many values)")
     for input in user_input:
-        if bool(re.match('[-]', input)) == True:
+        if bool(re.match('[-]', input)) == True: #This prevents any minus signs to be given to a point
             raise ValueError("No negative points please")
-
 
     user_input_point = [float(input) for input in user_input]
     #The following series of methods will be detailed in the second part of the exercice
@@ -49,11 +48,18 @@ try:
 except ValueError as err:
     print(err)
 
-plt.scatter(pikachu_training_data.iloc[:,0], pikachu_training_data.iloc[:,1])
-plt.scatter(pichu_training_data.iloc[:,0], pichu_training_data.iloc[:,1])
-plt.scatter(pichu_test_data.iloc[:,0], pichu_test_data.iloc[:,1])
-plt.scatter(pikachu_test_data.iloc[:,0], pikachu_test_data.iloc[:,1])
-# tittle x labels Y labels, färg + teckestil (kryss) - legend — Plot user given point ?
+
+plt.title("Visualisation of all points found in datasets")
+plt.xlabel("Width (cm)")
+plt.ylabel("Height (cm)")
+plt.plot(user_input_point[0],user_input_point[1],'r+', markersize = 15, label = "User given point") 
+plt.scatter(pikachu_training_data.iloc[:,0], pikachu_training_data.iloc[:,1], marker='s', label ="Pikachu training data")
+plt.scatter(pichu_training_data.iloc[:,0], pichu_training_data.iloc[:,1], marker = '^', label ="Pichu training data")
+plt.scatter(pichu_test_data.iloc[:,0], pichu_test_data.iloc[:,1], label ="Pichu test data")
+plt.scatter(pikachu_test_data.iloc[:,0], pikachu_test_data.iloc[:,1], label ="Pikachu test data")
+plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
+
+# tittle x labels Y labels, färg + teckestil (kryss) - legend — 
 
 '''
 List of the ten test points' coordinates, generated through function passed on test data. (5 from pichu file and 5 from pikachu file).
