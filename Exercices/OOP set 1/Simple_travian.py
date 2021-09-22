@@ -90,10 +90,38 @@ class Village:
             if ressource == ressources_types[3] and not (self._iron - quantity < 0):
                 self._iron -= quantity
             if ressource not in ressources_types:
-                raise ValueError("We don't stock the material {ressource}")  
+                raise ValueError(f"We don't stock the material {ressource}")  
             else:
                 raise ValueError("You cannot remove more than what you have !")
+
+    def train_solider(self):
+        if not (self._crop - 2 < 0) :
+            self._crop -= 2
+        else:
+            raise ValueError("Not enough crop to train a solider")
+
+        if not (self._clay - 2 < 0):
+            self._clay -= 2
+        else:
+            raise ValueError("Not enough clay to train a solider")
+        
+        if not (self._lumber - 2 < 0):
+            self._lumber -= 2
+        else:
+            raise ValueError("Not enough lumber to train a solider")
+
+        if not (self._iron - 2 < 0):
+            self._iron -= 2
+        else:
+            raise ValueError("Not enough iron to train a solider")
+        
+        solider1 = Solider()
 
 
     def __repr__(self) -> str:
         return f"Village, with current ressources of {self.crop} crops, {self.clay} units clay, {self.lumber} bits of lumber, {self.iron} pieces of iron, after {self.time_elapsed} hours have passed"
+
+    class Solider():
+        def __init__(self, HP, attack):
+            self._HP = HP
+            self._attack = attack 
