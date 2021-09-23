@@ -6,6 +6,7 @@ class Village:
         self._lumber = lumber
         self._iron = iron
         self._time_elapsed = 0
+        self._army = []
 
     @property
     def crop(self) -> int:
@@ -26,6 +27,10 @@ class Village:
     @property
     def time_elapsed(self) -> int:
         return self._time_elapsed
+    
+    @property
+    def army(self) -> list:
+        return self._army
 
 
     
@@ -115,13 +120,16 @@ class Village:
         else:
             raise ValueError("Not enough iron to train a solider")
         
-        solider1 = Solider()
+        self._army.append(Solider())
 
 
     def __repr__(self) -> str:
         return f"Village, with current ressources of {self.crop} crops, {self.clay} units clay, {self.lumber} bits of lumber, {self.iron} pieces of iron, after {self.time_elapsed} hours have passed"
 
-    class Solider():
-        def __init__(self, HP, attack):
-            self._HP = HP
-            self._attack = attack 
+class Solider():
+    def __init__(self, HP = 10, attack = 5):
+        self._HP = HP
+        self._attack = attack 
+
+    def __repr__(self) -> str:
+        return f"Solider HP : {self._HP} attack {self._attack}"
