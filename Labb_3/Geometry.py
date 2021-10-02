@@ -9,7 +9,7 @@ class Geometry:
         if isinstance(other, type(self)):
             return True
 
-    def point_check(x: float,y: float, figure: "Geometry") -> bool:
+    def point_check(figure: "Geometry", x: float,y: float, z: float = 0) -> bool:
         if isinstance(x, (float, int)) and isinstance (y, (float, int)):
             if isinstance (figure, Rectangle):
                 if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1]:
@@ -18,6 +18,11 @@ class Geometry:
                     return False
             elif isinstance (figure, Circle):
                 if ((x - figure._center[0])**2 + (y - figure._center[1])**2)**0.5 < figure._radius:
+                    return True
+                else:
+                    return False
+            elif isinstance(figure, Cube):
+                if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1] and figure._A[2] <= z <= figure._E[2]:
                     return True
                 else:
                     return False
@@ -126,10 +131,16 @@ class Cube(Geometry):
         self._l1 = l1
         self._l2 = l2
         self._l3 = l3
-        self._A = (center[0] - (l1 * 0.5), center[1] + (l2 * 0.5))
-        self._B = (center[0] + (l1 * 0.5), center[1] + (l2 * 0.5))
-        self._C = (center[0] + (l1 * 0.5), center[1] - (l2 * 0.5))
-        self._D = (center[0] - (l1 * 0.5), center[1] - (l2 * 0.5))
+        self._A = (center[0] - (l1 * 0.5), center[1] + (l2 * 0.5), center[2] - (l3 * 0.5))
+        self._B = (center[0] + (l1 * 0.5), center[1] + (l2 * 0.5), center[2] - (l3 * 0.5))
+        self._C = (center[0] + (l1 * 0.5), center[1] - (l2 * 0.5), center[2] - (l3 * 0.5))
+        self._D = (center[0] - (l1 * 0.5), center[1] - (l2 * 0.5), center[2] - (l3 * 0.5))
+        self._E = (center[0] - (l1 * 0.5), center[1] + (l2 * 0.5), center[2] + (l3 * 0.5))
+        self._F = (center[0] + (l1 * 0.5), center[1] + (l2 * 0.5), center[2] + (l3 * 0.5))
+        self._G = (center[0] + (l1 * 0.5), center[1] - (l2 * 0.5), center[2] + (l3 * 0.5))
+        self._H = (center[0] - (l1 * 0.5), center[1] - (l2 * 0.5), center[2] + (l3 * 0.5))
 
     
-
+class Sphere(Geometry):
+    def __init__(self) -> None:
+        super().__init__()
