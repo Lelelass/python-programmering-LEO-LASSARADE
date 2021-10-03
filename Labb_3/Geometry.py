@@ -10,7 +10,10 @@ class Geometry:
             return True
 
     def point_check(figure: "Geometry", x: float,y: float, z: float = 0) -> bool:
-        if isinstance(x, (float, int)) and isinstance (y, (float, int)):
+        """
+        Allows to check if a 2 or 3 dimensional point is within a figure of the Geometry class.
+        """
+        if isinstance(x, (float, int)) and isinstance (y, (float, int)) and isinstance (z, (float, int)):
             if isinstance (figure, Rectangle):
                 if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1]:
                     return True
@@ -147,7 +150,7 @@ class Circle(Geometry):
 
     def translate(self,x,y) -> None:
         """
-        Updates the x, y values of Rectangle's center
+        Updates the x, y values of Circle's center
         """
         if not isinstance(x, (float,int)) or  not isinstance(y, (float,int)):
             raise TypeError("x or y is not an int or a float, radius need to be one of those two types")
@@ -289,11 +292,47 @@ class Sphere(Geometry):
         """
         if len(center) < 3 or len(center) > 3:
             raise ValueError(f"Three values x, y, z expected for center tuple, {len(center)} given")
+        if not isinstance(radius, (float,int)):
+            raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
         self._center = center
         self._radius = radius
+
+    @property
+    def center(self) -> tuple:
+        return self._center
+
+    @property
+    def radius(self) -> float:
+        return self._radius
 
     def volume(self) -> float:
         return (self._radius **3 * pi * 4) / 3
 
     def area(self)-> float:
         return self._radius * 2 * pi * 4
+
+    def translate(self, x: float, y: float, z:float) -> None:
+        """
+        Updates the x, y, z values of Spheres's center
+        """
+        if not isinstance(x, (float,int)) or not isinstance(y, (float,int)) or not isinstance(z, (float,int)):
+            raise TypeError("x or y is not an int or a float, radius need to be one of those two types")
+        self._center = (x,y,z)
+         
+    def __add__(self, other) -> "Sphere":
+        if Geometry.typecheck(self, other) == True:
+            center = self._center
+            radius = self._radius + other._radius
+            return Sphere(center, radius)
+    
+    def __eq__(self, other: "Circle") -> bool:
+        if Geometry.typecheck(self, other) == True:
+            if self._radius == other._radius:
+                return True
+            else:
+                return False
+        else:
+            raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
+
+    def __repr__(self) -> str:
+        return f"Sphere, with radius {self._radius} and origin {self._center}"
