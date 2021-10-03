@@ -172,6 +172,7 @@ class Circle(Geometry):
         return f"Circle, with radius {self._radius} and origin {self._center}"
 
 class Cube(Geometry):
+    # Cube class is built so it can easily be rebuilt into Rectangular cuboid if needed.
     def __init__(self, center : tuple, lenght : float) -> None:
         if len(center) < 3 or len(center) > 3:
             raise ValueError(f"Three values x, y, z expected for center tuple, {len(center)} given")
@@ -237,6 +238,45 @@ class Cube(Geometry):
     @property
     def H(self):
         return self._H
+
+    def area(self) -> float:
+        return 6 * self._l1 **2
+
+    def volume(self) -> float:
+        return self._l1 **3
+
+    def translate(self,x: float,y: float,z: float) -> None:
+        """
+        Updates the x, y values of Rectangle's center, aswell as corner's cooridinates
+        """
+        if not isinstance(x, (float,int)) or not isinstance(y, (float,int)) or not isinstance(z, (float,int)):
+            raise TypeError("x, y or z is not an int or a float, radius need to be one of those two types")
+        self._center = (x,y,z)
+        self._A = (x - ((l1_half := self._l1 * 0.5)), y + ((l2_half := self._l2 * 0.5)), z - ((l3_half := self._l3 *0.5)))
+        self._B = (x + (l1_half), y + (l2_half), z - (l3_half))
+        self._C = (x + (l1_half), y - (l2_half), z - (l3_half))
+        self._D = (x - (l1_half), y - (l2_half), z - (l3_half))
+        self._E = (x - (l1_half), y + (l2_half), z + (l3_half))
+        self._F = (x + (l1_half), y + (l2_half), z + (l3_half))
+        self._G = (x + (l1_half), y - (l2_half), z + (l3_half))
+        self._H = (x - (l1_half), y - (l2_half), z + (l3_half))    
+
+    def __add__(self, other : "Cube") -> "Cube":
+        if Geometry.typecheck(self, other) == True:
+            center = self._center
+            length = self._l1 + other._l1
+            return(Cube(center, length))
+        else:
+            raise TypeError(f"{type(other)} is not addable to a {type(self)}")
+
+    def __eq__(self,other : "Cube")-> bool:
+        if Geometry.typecheck(self, other) == True:
+            if self._l1 == other._l1:
+                return True
+            else:
+                return False
+        else:
+            raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
 
     def __repr__(self) -> str:
         return f"Cube, with dimensions ({self._l1} * {self._l2} * {self._l3}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D} E: {self._E} F: {self._E} G: {self._G} H: {self.H}"    
