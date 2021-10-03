@@ -46,6 +46,8 @@ class Rectangle(Geometry):
     def __init__(self, center : tuple, l1 : float, l2 :float) -> None:
         if len(center) < 2 or len(center) > 2:
             raise ValueError(f"Two values x, y expected for center tuple, {len(center)} given")
+        if not isinstance(center, tuple):
+            raise TypeError(f"{center} is not a tuple, tuple expected.")
         if not isinstance(l1, (float,int)) or not isinstance(l2, (float,int)) :
             raise TypeError(f"{l1} is not an int or a float, radius need to be one of those two types")
         self._center = center
@@ -128,6 +130,8 @@ class Circle(Geometry):
     def __init__(self, center : tuple, radius : float) -> None:
         if len(center) < 2 or len(center) > 2:
             raise ValueError(f"Two values x, y expected for center tuple, {len(center)} given")
+        if not isinstance(center, tuple):
+            raise TypeError(f"{center} is not a tuple, tuple expected.")
         if not isinstance(radius, (float,int)):
             raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
         self._center = center
@@ -179,6 +183,8 @@ class Cube(Geometry):
     def __init__(self, center : tuple, lenght : float) -> None:
         if len(center) < 3 or len(center) > 3:
             raise ValueError(f"Three values x, y, z expected for center tuple, {len(center)} given")
+        if not isinstance(center, tuple):
+            raise TypeError(f"{center} is not a tuple, tuple expected.")    
         if not isinstance(lenght, (float,int)):
             raise TypeError("Make sure that l1, l2 and l3 are all either int or floats ")
         self._center = center
@@ -250,7 +256,7 @@ class Cube(Geometry):
 
     def translate(self,x: float,y: float,z: float) -> None:
         """
-        Updates the x, y values of Rectangle's center, aswell as corner's cooridinates
+        Updates the x, y, z values of Cube's center, aswell as corner's cooridinates
         """
         if not isinstance(x, (float,int)) or not isinstance(y, (float,int)) or not isinstance(z, (float,int)):
             raise TypeError("x, y or z is not an int or a float, radius need to be one of those two types")
@@ -292,6 +298,8 @@ class Sphere(Geometry):
         """
         if len(center) < 3 or len(center) > 3:
             raise ValueError(f"Three values x, y, z expected for center tuple, {len(center)} given")
+        if not isinstance(center, tuple):
+            raise TypeError(f"{center} is not a tuple, tuple expected.")
         if not isinstance(radius, (float,int)):
             raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
         self._center = center
