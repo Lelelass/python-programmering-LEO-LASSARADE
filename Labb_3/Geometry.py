@@ -117,11 +117,9 @@ class Rectangle(Geometry):
                 return False
         else:
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
-            
-            
-
+                     
     def __repr__(self) -> str:
-        return f"Rectangle, with lenght ({self._l1} * {self._l2}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D}"
+        return f"Rectangle, with dimensions ({self._l1} * {self._l2}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D}"
         
 class Circle(Geometry):
     def __init__(self, center : tuple, radius : float) -> None:
@@ -131,6 +129,15 @@ class Circle(Geometry):
             raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
         self._center = center
         self._radius = radius
+
+    @property
+    def center(self) -> tuple:
+        return self._center
+
+    @property
+    def radius(self) -> float:
+        return self._radius
+
     
     def area(self) -> float:
         return self._radius **2 * pi
@@ -145,9 +152,8 @@ class Circle(Geometry):
         if not isinstance(x, (float,int)) or  not isinstance(y, (float,int)):
             raise TypeError("x or y is not an int or a float, radius need to be one of those two types")
         self._center = (x,y)
-        
-    
-    def __add__(self, other):
+         
+    def __add__(self, other) -> "Circle":
         if Geometry.typecheck(self, other) == True:
             center = self._center
             radius = self._radius + other._radius
@@ -155,7 +161,7 @@ class Circle(Geometry):
     
     def __eq__(self, other: "Circle") -> bool:
         if Geometry.typecheck(self, other) == True:
-            if Circle.area(self) == Circle.area(other):
+            if self._radius == other._radius:
                 return True
             else:
                 return False
@@ -166,14 +172,16 @@ class Circle(Geometry):
         return f"Circle, with radius {self._radius} and origin {self._center}"
 
 class Cube(Geometry):
-    def __init__(self, center : tuple, l1 : float, l2 :float, l3 : float) -> None:
+    def __init__(self, center : tuple, lenght : float) -> None:
         if len(center) < 3 or len(center) > 3:
             raise ValueError(f"Three values x, y, z expected for center tuple, {len(center)} given")
+        if not isinstance(lenght, (float,int)):
+            raise TypeError("Make sure that l1, l2 and l3 are all either int or floats ")
         self._center = center
-        self._l1 = l1
-        self._l2 = l2
-        self._l3 = l3
-        self._A = (center[0] - ((half_l1 := l1 * 0.5)), center[1] + ((half_l2 := l2 * 0.5)), center[2] - ((half_l3 := l3 * 0.5)))
+        self._l1 = lenght
+        self._l2 = lenght
+        self._l3 = lenght
+        self._A = (center[0] - ((half_l1 := lenght * 0.5)), center[1] + ((half_l2 := lenght * 0.5)), center[2] - ((half_l3 := lenght * 0.5)))
         self._B = (center[0] + (half_l1), center[1] + (half_l2), center[2] - (half_l3))
         self._C = (center[0] + (half_l1), center[1] - (half_l2), center[2] - (half_l3))
         self._D = (center[0] - (half_l1), center[1] - (half_l2), center[2] - (half_l3))
@@ -193,6 +201,10 @@ class Cube(Geometry):
     @property
     def l2(self):
         return self._l2
+
+    @property
+    def l3(self):
+        return self._l3
 
     @property
     def A(self):
@@ -225,6 +237,9 @@ class Cube(Geometry):
     @property
     def H(self):
         return self._H
+
+    def __repr__(self) -> str:
+        return f"Cube, with dimensions ({self._l1} * {self._l2} * {self._l3}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D} E: {self._E} F: {self._E} G: {self._G} H: {self.H}"    
 
     
 class Sphere(Geometry):
