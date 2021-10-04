@@ -2,8 +2,8 @@ from numpy import pi
 
 
 class Geometry:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, center :tuple) -> None:
+        self._center = center
 
     def typecheck(self, other):
         if isinstance(other, type(self)):
@@ -39,17 +39,51 @@ class Geometry:
         else:
             raise TypeError(f"{x} or {y} not valid, should be floats or ints")
 
+    def radius_validation(radius: float) -> bool:
+            if not isinstance(radius, (float,int)):
+                raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
+            elif radius < 0:
+                raise ValueError("A radius can't be negative")
+            else:
+                return True
+
+    def lenght_validation(lenght:float) -> bool:
+            if not isinstance(lenght, (float,int)):
+                raise TypeError(f"{lenght} is a {type(lenght)} not an int or a float, lenght need to be one of those two types")
+            elif lenght <= 0:
+                raise ValueError(f"{lenght} is not a valid value, lenght should be positive")
+            else:
+                return True
+
+    def center_validation_2D(center_to_test: tuple) -> bool:
+        if not isinstance(center_to_test, tuple):
+            raise TypeError(f"{center_to_test} is not a tuple, tuple expected.")
+        elif not isinstance(center_to_test[0], (int,float)) or not isinstance(center_to_test[1], (int,float)):
+            raise ValueError("Center coordinates must be int or floats")
+        elif len(center_to_test) < 2 or len(center_to_test) > 2:
+            raise ValueError(f"Two values x, y expected for center tuple, {len(center_to_test)} given")
+        else:
+            return True        
+
+    def center_validation_3D(center: tuple) -> bool:
+        if not isinstance(center, tuple):
+            raise TypeError(f"{center} is not a tuple, tuple expected.")
+        elif not isinstance(center[0], (int,float)) or not isinstance(center[1], (int,float)) or not isinstance(center[2], (int,float)):
+            raise ValueError("Center coordinates must be int or floats")            
+        elif len(center) < 3 or len(center) > 3:
+            raise ValueError(f"Three values x, y, z expected for center tuple, {len(center)} given")
+        else:
+            return True                   
+
 
        
         
 class Rectangle(Geometry):
     def __init__(self, center : tuple, l1 : float, l2 :float) -> None:
-        if len(center) < 2 or len(center) > 2:
-            raise ValueError(f"Two values x, y expected for center tuple, {len(center)} given")
-        if not isinstance(center, tuple):
-            raise TypeError(f"{center} is not a tuple, tuple expected.")
-        if not isinstance(l1, (float,int)) or not isinstance(l2, (float,int)) :
-            raise TypeError(f"{l1} is not an int or a float, radius need to be one of those two types")
+        if Geometry.center_validation_2D(center):
+            for value in [l1,l2]:
+                if Geometry.lenght_validation(value):
+                    continue
         self._center = center
         self._l1 = l1
         self._l2 = l2
@@ -134,6 +168,8 @@ class Circle(Geometry):
             raise TypeError(f"{center} is not a tuple, tuple expected.")
         if not isinstance(radius, (float,int)):
             raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
+        if radius < 0:
+            raise ValueError("A radius can't be negative")
         self._center = center
         self._radius = radius
 
@@ -188,9 +224,17 @@ class Cube(Geometry):
         if not isinstance(lenght, (float,int)):
             raise TypeError("Make sure that l1, l2 and l3 are all either int or floats ")
         self._center = center
-        self._l1 = lenght
-        self._l2 = lenght
-        self._l3 = lenght
+        if lenght <= 0:
+            self._l1 = -(lenght)
+            self._l2 = -(lenght)
+            self._l3 = -(lenght)
+        elif lenght >= 0 :
+            self._l1 = lenght
+            self._l2 = lenght
+            self._l3 = lenght
+        else:
+            raise ValueError("0 is not an accepted lenght for the cube")
+
         self._A = (center[0] - ((half_l1 := lenght * 0.5)), center[1] + ((half_l2 := lenght * 0.5)), center[2] - ((half_l3 := lenght * 0.5)))
         self._B = (center[0] + (half_l1), center[1] + (half_l2), center[2] - (half_l3))
         self._C = (center[0] + (half_l1), center[1] - (half_l2), center[2] - (half_l3))
@@ -302,6 +346,8 @@ class Sphere(Geometry):
             raise TypeError(f"{center} is not a tuple, tuple expected.")
         if not isinstance(radius, (float,int)):
             raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
+        if radius < 0:
+            raise ValueError("A radius can't be negative")        
         self._center = center
         self._radius = radius
 
