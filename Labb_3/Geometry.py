@@ -276,7 +276,7 @@ class Cube(Geometry):
         Updates the x, y, z values of Cube's center, aswell as corner's cooridinates
         """
         super().translate(x,y,z)
-        self._A = (x - ((l1_half := self._l1 * 0.5)), y + ((l2_half := self._l2 * 0.5)), z - ((l3_half := self._l3 *0.5)))
+        self._A = (x - ((l1_half := self._lenght * 0.5)), y + ((l2_half := self._lenght * 0.5)), z - ((l3_half := self._lenght *0.5)))
         self._B = (x + (l1_half), y + (l2_half), z - (l3_half))
         self._C = (x + (l1_half), y - (l2_half), z - (l3_half))
         self._D = (x - (l1_half), y - (l2_half), z - (l3_half))
@@ -304,7 +304,7 @@ class Cube(Geometry):
 
     def __len__(self):
         super().__len__(self)
-        
+
     def __repr__(self) -> str:
         return f"Cube, with dimensions ({self._lenght} * {self._lenght} * {self._lenght}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D} E: {self._E} F: {self._E} G: {self._G} H: {self.H}"    
 
