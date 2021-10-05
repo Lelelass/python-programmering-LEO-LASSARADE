@@ -184,6 +184,8 @@ class Circle(Geometry):
             center = self._center
             radius = self._radius + other._radius
             return Circle(center, radius)
+        else:
+            raise TypeError(f"{type(other)} is not addable to a {type(self)}")
     
     def __eq__(self, other: "Circle") -> bool:
         if isinstance(self, type(other)):
@@ -193,6 +195,9 @@ class Circle(Geometry):
                 return False
         else:
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
+
+    def __len__(self)->float:
+        return self._radius
 
     def __repr__(self) -> str:
         return f"Circle, with radius {self._radius} and origin {self._center}"
@@ -297,6 +302,9 @@ class Cube(Geometry):
         else:
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
 
+    def __len__(self):
+        super().__len__(self)
+        
     def __repr__(self) -> str:
         return f"Cube, with dimensions ({self._lenght} * {self._lenght} * {self._lenght}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D} E: {self._E} F: {self._E} G: {self._G} H: {self.H}"    
 
