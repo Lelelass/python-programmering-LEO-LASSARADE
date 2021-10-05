@@ -5,47 +5,44 @@ class Geometry:
     def __init__(self, center :tuple) -> None: # All geometrical figures have a common element : origin, it is initialised on the parent class Geometry
         if not isinstance(center, tuple):
             raise TypeError(f"Center must be a tuple, not {type(center)}")
-        if not 1 < len(center) < 4:
-            raise ValueError(f"A center must have between two and three coordinates, not {len(center)}")
+        if not len(center) == 3:
+            raise ValueError(f"A center must have three coordinates, not {len(center)}")
         for value in center:
             if not isinstance(value, (int,float)):
                 raise TypeError(f"A center's coordinate must be a float or int, not {type(value)}")
         self._center = center
 
 
-    def typecheck(self, other):
-        if isinstance(other, type(self)):
-            return True
-
-    def point_check(figure: "Geometry", x: float,y: float, z: float = 0) -> bool:# z optional for figure in 3D plan
+    def point_check(figure: "Geometry", x: float,y: float, z: float) -> bool:
         """
         Allows to check if a 2 or 3 dimensional point is within a figure of the Geometry class.
         """
-        if isinstance(x, (float, int)) and isinstance (y, (float, int)) and isinstance (z, (float, int)):
-            if isinstance (figure, Rectangle):
-                if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1]:
-                    return True
-                else:
-                    return False
-            elif isinstance (figure, Circle):
-                if ((x - figure._center[0])**2 + (y - figure._center[1])**2)**0.5 <= figure._radius:
-                    return True
-                else:
-                    return False
-            elif isinstance(figure, Cube):
-                if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1] and figure._A[2] <= z <= figure._E[2]:
-                    return True
-                else:
-                    return False
-            elif isinstance(figure,Sphere):
-                if ((x - figure._center[0])**2 + (y - figure._center[1])**2 + (z - figure._center[2])**2) <= figure._radius**2:
-                    return True
-                else:
-                    return False
+        for value in [x,y,z]: #Checks for corrrect comparison input
+            if not isinstance(value, (float, int)):
+                raise TypeError(f"{x} or {y} not valid, should be floats or ints")
+        if isinstance (figure, Rectangle):
+            if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1]:# Not sure about adding z here, as the point should precisely be on z to even be in
+                return True
             else:
-                raise TypeError(f"You can only check a point in relation to a figure belonging to the Geometry class, not a {type(figure)}")
+                return False
+        elif isinstance (figure, Circle):
+            if ((x - figure._center[0])**2 + (y - figure._center[1])**2)**0.5 <= figure._radius:# same here about z as above
+                return True
+            else:
+                return False
+        elif isinstance(figure, Cube):
+            if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1] and figure._A[2] <= z <= figure._E[2]:
+                return True
+            else:
+                return False
+        elif isinstance(figure,Sphere):
+            if ((x - figure._center[0])**2 + (y - figure._center[1])**2 + (z - figure._center[2])**2) <= figure._radius**2:
+                return True
+            else:
+                return False
         else:
-            raise TypeError(f"{x} or {y} not valid, should be floats or ints")
+            raise TypeError(f"You can only check a point in relation to a figure belonging to the Geometry class, not a {type(figure)}")
+        
 
     def radius_validation(radius: float) -> bool:
             if not isinstance(radius, (float,int)):
@@ -60,9 +57,18 @@ class Geometry:
             if not isinstance(lenght, (float,int)):
                 raise TypeError(f"{lenght} is a {type(lenght)} not an int or a float, lenght need to be one of those two types")
             elif lenght <= 0:
-                raise ValueError(f"{lenght} is not a valid value, lenght should be positive")
+                raise ValueError(f"{lenght} is not a valid value, lenght should be over 0")
             else:
                 return True
+
+    def translate(self,x,y,z) -> None:# As I have both 3D and 2D figures, I decided that all figures would have a 3 dimensional origin.
+            """
+            Updates the x, y, z values of an origin
+            """
+            for value in [x,y,z]:
+                if not isinstance(value, (float,int)):
+                    raise TypeError(f"{value} is not an int or a float, radius need to be one of those two types, not {type(value)}")
+            self._center = (x,y,z)
 
        
         
@@ -114,22 +120,19 @@ class Rectangle(Geometry):
     def perimeter(self) -> float:
         return (self._l1 + self._l2) * 2
 
-    def translate(self,x,y) -> None:
+    def translate(self,x,y,z) -> None:
         """
-        Updates the x, y values of Rectangle's center, aswell as corner's cooridinates
+        Updates the x, y values of Rectangle's center, as well as corner's cooridinates
         """
-        for value in [x,y]:
-            if not isinstance(value, (float,int)):
-                raise TypeError(f"x or y is not an int or a float, radius need to be one of those two types, not {type(value)}")
-        self._center = (x,y)
-        self._A = (x - ((l1_half := self._l1 * 0.5)), y + ((l2_half := self._l2 * 0.5)))
-        self._B = (x + (l1_half), y + (l2_half))
-        self._C = (x + (l1_half), y - (l2_half))
-        self._D = (x - (l1_half), y - (l2_half))
+        super().translate(x,y,z)
+        self._A = (x - ((l1_half := self._l1 * 0.5)), y + ((l2_half := self._l2 * 0.5)), z - ((l3_half := self._l3 *0.5)))
+        self._B = (x + (l1_half), y + (l2_half), z - (l3_half))
+        self._C = (x + (l1_half), y - (l2_half), z - (l3_half))
+        self._D = (x - (l1_half), y - (l2_half), z - (l3_half))
 
 
     def __add__(self, other : "Rectangle") -> "Rectangle":
-        if Geometry.typecheck(self, other):
+        if isinstance(self, type(other)):
             center = self._center
             l1 = self._l1 + other._l1
             l2 = self._l2 + other._l2 
@@ -138,7 +141,7 @@ class Rectangle(Geometry):
             raise TypeError(f"{type(other)} is not addable to a {type(self)}")
 
     def __eq__(self,other : "Rectangle")-> bool:
-        if Geometry.typecheck(self, other):
+        if isinstance(self, type(other)):
             if Rectangle.area(self) == Rectangle.area(other):
                 return True
             else:
@@ -170,23 +173,20 @@ class Circle(Geometry):
     def perimeter(self)-> float:
         return self._radius * 2 * pi
 
-    def translate(self,x,y) -> None:
+    def translate(self,x,y,z) -> None:
         """
         Updates the x, y values of Circle's center
         """
-        for value in [x,y]:
-            if not isinstance(value, (float,int)):
-                raise TypeError(f"x or y is not an int or a float, radius need to be one of those two types, not {type(value)}")
-        self._center = (x,y)
+        super().translate(x,y,z)
          
     def __add__(self, other) -> "Circle":
-        if Geometry.typecheck(self, other) == True:
+        if isinstance(self, type(other)):
             center = self._center
             radius = self._radius + other._radius
             return Circle(center, radius)
     
     def __eq__(self, other: "Circle") -> bool:
-        if Geometry.typecheck(self, other) == True:
+        if isinstance(self, type(other)):
             if self._radius == other._radius:
                 return True
             else:
@@ -270,10 +270,7 @@ class Cube(Geometry):
         """
         Updates the x, y, z values of Cube's center, aswell as corner's cooridinates
         """
-        for value in [x,y,z]:
-            if not isinstance(value, (float,int)):
-                raise TypeError("x, y or z is not an int or a float, radius need to be one of those two types")
-        self._center = (x,y,z)
+        super().translate(x,y,z)
         self._A = (x - ((l1_half := self._l1 * 0.5)), y + ((l2_half := self._l2 * 0.5)), z - ((l3_half := self._l3 *0.5)))
         self._B = (x + (l1_half), y + (l2_half), z - (l3_half))
         self._C = (x + (l1_half), y - (l2_half), z - (l3_half))
@@ -284,7 +281,7 @@ class Cube(Geometry):
         self._H = (x - (l1_half), y - (l2_half), z + (l3_half))    
 
     def __add__(self, other : "Cube") -> "Cube":
-        if Geometry.typecheck(self, other):
+        if isinstance(self, type(other)):
             center = self._center
             length = self._lenght + other._lenght
             return(Cube(center, length))
@@ -292,7 +289,7 @@ class Cube(Geometry):
             raise TypeError(f"{type(other)} is not addable to a {type(self)}")
 
     def __eq__(self,other : "Cube")-> bool:
-        if Geometry.typecheck(self, other):
+        if isinstance(self, type(other)):
             if self._lenght == other._lenght:
                 return True
             else:
@@ -329,19 +326,16 @@ class Sphere(Circle):
         """
         Updates the x, y, z values of Spheres's center
         """
-        for value in [x,y,z]:
-            if not isinstance(value, (float,int)):
-                raise TypeError("x or y is not an int or a float, radius need to be one of those two types")
-        self._center = (x,y,z)
+        super().translate(x,y,z)
          
     def __add__(self, other) -> "Sphere":
-        if Geometry.typecheck(self, other) == True:
+        if isinstance(self, type(other)):
             center = self._center
             radius = self._radius + other._radius
             return Sphere(center, radius)
     
-    def __eq__(self, other: "Circle") -> bool:
-        if Geometry.typecheck(self, other) == True:
+    def __eq__(self, other: "Sphere") -> bool:
+        if isinstance(self, type(other)):
             if self._radius == other._radius:
                 return True
             else:
