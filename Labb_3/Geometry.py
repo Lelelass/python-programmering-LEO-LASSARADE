@@ -45,6 +45,9 @@ class Geometry:
         
 
     def radius_validation(radius: float) -> bool:
+            """
+            Validates a geometrical radius as a figure's argument.
+            """
             if not isinstance(radius, (float,int)):
                 raise TypeError(f"{radius} is not an int or a float, radius need to be one of those two types")
             elif radius < 0:
@@ -54,6 +57,9 @@ class Geometry:
 
     
     def lenght_validation(lenght:float) -> bool:
+            """
+            Validates a geometrical lenght as a figure's argument.
+            """
             if not isinstance(lenght, (float,int)):
                 raise TypeError(f"{lenght} is a {type(lenght)} not an int or a float, lenght need to be one of those two types")
             elif lenght <= 0:
@@ -61,7 +67,7 @@ class Geometry:
             else:
                 return True
 
-    def translate(self,x,y,z) -> None:# As I have both 3D and 2D figures, I decided that all figures would have a 3 dimensional origin.
+    def translate(self,x,y,z) -> None:# As I have both 3D and 2D figures, I decided that all figures would have a 3 dimensional origin. The function can then be inherited by all classes
             """
             Updates the x, y, z values of an origin
             """
@@ -81,6 +87,7 @@ class Rectangle(Geometry):
         self._center = center
         self._l1 = l1
         self._l2 = l2
+        #I chose to give the corner's coordinate for both my Rectangle and Cube class.
         self._A = (center[0] - ((l1_half := l1 * 0.5)), center[1] + ((l2_half := l2 * 0.5)))
         self._B = (center[0] + (l1_half), center[1] + (l2_half))
         self._C = (center[0] + (l1_half), center[1] - (l2_half))
@@ -115,6 +122,7 @@ class Rectangle(Geometry):
         return self._D
     
     def area(self) -> float:
+        # Functions are simple as data validation is done at another point, and wrong arguments should normally not come in here.
         return self._l1 * self._l2
 
     def perimeter(self) -> float:
@@ -148,6 +156,9 @@ class Rectangle(Geometry):
                 return False
         else:
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
+
+    def __len__(self)-> float: # I consider Rectangles perimeter as object's len. So calling __len__ is like calling function perimeter. I think it should be accessible the both ways for coherence. Same thought applied to Circle and radius.
+        return self.perimeter()
                      
     def __repr__(self) -> str:
         return f"Rectangle, with dimensions ({self._l1} * {self._l2}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D}"
@@ -175,7 +186,7 @@ class Circle(Geometry):
 
     def translate(self,x,y,z) -> None:
         """
-        Updates the x, y values of Circle's center
+        Updates the x, y, z values of Circle's center
         """
         super().translate(x,y,z)
          
@@ -273,7 +284,7 @@ class Cube(Geometry):
 
     def translate(self,x: float,y: float,z: float) -> None:
         """
-        Updates the x, y, z values of Cube's center, aswell as corner's cooridinates
+        Updates the x, y, z values of Cube's center, as well as corner's cooridinates
         """
         super().translate(x,y,z)
         self._A = (x - ((l1_half := self._lenght * 0.5)), y + ((l2_half := self._lenght * 0.5)), z - ((l3_half := self._lenght *0.5)))
@@ -302,8 +313,6 @@ class Cube(Geometry):
         else:
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
 
-    def __len__(self):
-        super().__len__(self)
 
     def __repr__(self) -> str:
         return f"Cube, with dimensions ({self._lenght} * {self._lenght} * {self._lenght}) l.u. and origin {self._center}. points A: {self._A} B {self._B} C {self._C} D {self._D} E: {self._E} F: {self._E} G: {self._G} H: {self.H}"    
@@ -350,6 +359,9 @@ class Sphere(Circle):
                 return False
         else:
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
+
+    def __len__(self):
+        super().__len__(self) #Inhertited as it is from Circle
 
     def __repr__(self) -> str:
         return f"Sphere, with radius {self._radius} and origin {self._center}"
