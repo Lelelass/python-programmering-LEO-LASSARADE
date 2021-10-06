@@ -78,7 +78,17 @@ class TestCube(unittest.TestCase):
         return Cube(self.center, self.lenght)
 
     def test_cube_translate(self):
-        pass
+        cube1 = self.create_cube()
+        cube1.translate(1,1,1)
+        self.assertEqual(cube1._center, (1,1,1))
+
+    def test_return_corner_coordinate(self):
+            cube1 = self.create_cube()
+            self.assertEqual(type(cube1._A), tuple)
+
+
+
+
 
     
 
