@@ -19,7 +19,7 @@ class Geometry:
         """
         for value in [x,y,z]: #Checks for corrrect comparison input
             if not isinstance(value, (float, int)):
-                raise TypeError(f"{x} or {y} not valid, should be floats or ints")
+                raise TypeError(f"{x} or {y} or {z} not valid, should be floats or ints")
         if isinstance (figure, Rectangle):
             if figure._A[0] <= x <= figure._B[0] and figure._D[1] <= y <= figure._A[1]:# Not sure about adding z here, as the point should precisely be on z to even be in
                 return True
@@ -208,7 +208,7 @@ class Circle(Geometry):
             raise TypeError(f"{other} is a {type(other)} and cannot be compared with a {type(self)}")
 
     def __len__(self)->float:
-        return self._radius
+        return self.perimeter()
 
     def __repr__(self) -> str:
         return f"Circle, with radius {self._radius} and origin {self._center}"
