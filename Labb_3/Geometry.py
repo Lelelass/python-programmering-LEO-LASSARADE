@@ -219,7 +219,7 @@ class Cube(Geometry):
         super().__init__(center)
         if Geometry.lenght_validation(lenght):
             self._lenght = lenght
-            self._A = (center[0] - ((half_l1 := lenght * 0.5)), center[1] + ((half_l2 := lenght * 0.5)), center[2] - ((half_l3 := lenght * 0.5)))
+            self._A = (center[0] - ((half_l1 := lenght * 0.5)), center[1] + ((half_l2 := lenght * 0.5)), center[2] - ((half_l3 := lenght * 0.5)))#Walrus operator to save on calculations
             self._B = (center[0] + (half_l1), center[1] + (half_l2), center[2] - (half_l3))
             self._C = (center[0] + (half_l1), center[1] - (half_l2), center[2] - (half_l3))
             self._D = (center[0] - (half_l1), center[1] - (half_l2), center[2] - (half_l3))
