@@ -86,7 +86,18 @@ class TestCube(unittest.TestCase):
             cube1 = self.create_cube()
             self.assertEqual(type(cube1._A), tuple)
 
+class TestSphere(unittest.TestCase):
 
+    def setUp(self) -> None:
+        self.center = (0,0,0)
+        self.radius = 1
+
+    def create_sphere(self)-> "Sphere":
+        return Sphere(self.center, self.radius)
+
+    def test_volume(self):
+        sphere1 = self.create_sphere()
+        self.assertAlmostEqual(sphere1.volume(), (pi * 4)/3)
 
 
 
